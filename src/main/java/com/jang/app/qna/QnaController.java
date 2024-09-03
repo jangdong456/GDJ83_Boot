@@ -42,6 +42,7 @@ public class QnaController {
 	
 	@PostMapping("add")
 	public String add(QnaVO qnaVO) throws Exception {
+		
 		int result = qnaService.add(qnaVO);
 		return "redirect:./list";
 		
