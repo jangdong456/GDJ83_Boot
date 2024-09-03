@@ -1,6 +1,7 @@
 package com.jang.app.qna;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -16,6 +17,15 @@ public class QnaMapperTest {
 	
 	@Autowired
 	private QnaMapper qnaMapper;
+	
+	@Test
+	void getDetailTest() throws Exception {
+		QnaVO qnaVO = new QnaVO();
+		qnaVO.setBoardNum(110L);
+		qnaVO = qnaMapper.getDetail(qnaVO);
+		
+		assertNotNull(qnaVO);
+	}
 	
 	@Test
 	void getListTest() throws Exception {
