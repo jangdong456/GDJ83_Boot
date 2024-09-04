@@ -63,4 +63,8 @@
 			<result property="oriName" column="ORI_NAME"/>
 		</collection>
 	</resultMap>
+	
+	<select id="getFileDetail" parameterType="QnaFileVO" resultType="QnaFileVO">
+		SELECT * FROM QNAFILES WHERE FILE_NUM=#{fileNum}
+	</select>
 </mapper>

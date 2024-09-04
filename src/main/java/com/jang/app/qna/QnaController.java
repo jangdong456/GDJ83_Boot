@@ -42,9 +42,7 @@ public class QnaController {
 		model.addAttribute("list",ar);
 		model.addAttribute("pager",pager);
 		
-		log.info("pager: {} : {}", pager, "담기나요?");
-		
-	
+		log.info("pager: {} :", pager);
 	}
 	
 	@GetMapping("add")
@@ -64,6 +62,14 @@ public class QnaController {
 	public void getDetial(QnaVO qnaVO, Model model) throws Exception {
 		qnaVO = qnaService.getDetail(qnaVO);
 		model.addAttribute("vo", qnaVO);
+	}
+	
+	// 프로젝트시 qnaFileVO 상속받게끔 해야 편하게 할 수 있음
+	@GetMapping("fileDown")
+	public String fileDown(QnaFileVO qnaFileVO, Model model) throws Exception {
+		qnaFileVO = qnaService.getFileDetail(qnaFileVO);
+		model.addAttribute("file", qnaFileVO);
 		
+		return "fileDownView";
 	}
 }
