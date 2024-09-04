@@ -31,11 +31,11 @@ public class QnaService {
 	}
 	
 	public int add(QnaVO qnaVO, MultipartFile [] attaches) throws Exception {
-		log.info("==========Insert Before BoardNum: {}", qnaVO.getBoardNum());
-//		int result = qnaMapper.add(qnaVO);
-		log.info("==========Insert After BoardNum: {}", qnaVO.getBoardNum());
-//		result = qnaMapper.refUpdate(qnaVO);
-		log.info("==========Insert After Ref: {}", qnaVO.getRef());
+
+		int result = qnaMapper.add(qnaVO);
+
+		result = qnaMapper.refUpdate(qnaVO);
+
 		
 		//파일 HDD에 저장 후 DB에 정보를 추가 | 경로 : D:/upload/
 		// 배열이니까 for문 사용
@@ -45,10 +45,16 @@ public class QnaService {
 				continue;
 			}
 			String fileName = fileManager.fileSave(upload+name, mf); // D:/upload/qna
-			log.info("저장된 파일명 : {}",fileName);
+			
+			QnaFileVO qnaFileVO = new QnaFileVO();
+			qnaFileVO.setFileName(fileName);
+			qnaFileVO.setOriName(mf.getOriginalFilename());
+			qnaFileVO.setBoardNum(qnaVO.getBoardNum());
+			
+			result = qnaMapper.addFile(qnaFileVO);
 		}
 		
-		return 0;
+		return result;
 	}
 	
 	public QnaVO getDetail(QnaVO qnaVO) throws Exception {
