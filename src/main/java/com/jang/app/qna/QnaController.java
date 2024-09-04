@@ -3,6 +3,7 @@ package com.jang.app.qna;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,10 @@ public class QnaController {
 	@Autowired
 	private QnaService qnaService;
 	
+	
 	@GetMapping("list")
 	public void getList(Pager pager, Model model) throws Exception {
+
 		List<QnaVO> ar = qnaService.getList(pager);
 		
 		model.addAttribute("list",ar);
