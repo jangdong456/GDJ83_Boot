@@ -35,7 +35,10 @@ public class QnaService {
 		int result = qnaMapper.add(qnaVO);
 
 		result = qnaMapper.refUpdate(qnaVO);
-
+		
+		if(result ==1) {
+			throw new Exception();
+		}
 		
 		//파일 HDD에 저장 후 DB에 정보를 추가 | 경로 : D:/upload/
 		// 배열이니까 for문 사용
