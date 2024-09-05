@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jang.app.util.FileManager;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class) // 부모 인터페이스가 있는 클래스에 주면 작동이 잘 안되는 경우가 있다. -> 그래서 properties파일에 proxy설정파일 추가함
 public class QnaService {
 	
 	@Autowired
@@ -30,12 +32,16 @@ public class QnaService {
 		return qnaMapper.getList(pager);
 	}
 	
+	
 	public int add(QnaVO qnaVO, MultipartFile [] attaches) throws Exception {
 
 		int result = qnaMapper.add(qnaVO);
 
 		result = qnaMapper.refUpdate(qnaVO);
-
+		
+		if(result==1) {
+			throw new Exception();
+		}
 		
 		//파일 HDD에 저장 후 DB에 정보를 추가 | 경로 : D:/upload/
 		// 배열이니까 for문 사용
