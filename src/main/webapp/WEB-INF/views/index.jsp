@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h1>Index Page</h1>
-	<img alt="" src="/images/1.png">
+	<img alt="" src="/images/2.gif">
 	
 	<c:if test="${empty member}">
 		<h1>Login 하기 전</h1>
