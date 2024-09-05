@@ -16,8 +16,6 @@ import com.jang.app.util.Pager;
 
 import lombok.extern.slf4j.Slf4j;
 
-
-
 @Controller
 @Slf4j
 @RequestMapping("/qna/*")
