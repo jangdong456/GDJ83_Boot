@@ -15,7 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@Transactional(rollbackFor = Exception.class) // 부모 인터페이스가 있는 클래스에 주면 작동이 잘 안되는 경우가 있다. -> 그래서 properties파일에 proxy설정파일 추가함
+@Transactional(rollbackFor = Exception.class) 
+// 부모 인터페이스가 있는 클래스에 주면 작동이 잘 안되는 경우가 있다. -> 그래서 properties파일에 proxy설정파일 추가함
 public class QnaService {
 	
 	@Autowired
