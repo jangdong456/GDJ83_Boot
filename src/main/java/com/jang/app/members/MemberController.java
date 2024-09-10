@@ -33,16 +33,18 @@ public class MemberController {
 		
 	}
 	
-	@PostMapping("login")
-	public String login(MemberVO memberVO, HttpSession session) throws Exception {
-		memberVO = memberService.detail(memberVO);
-		
-		if(memberVO != null) {
-			session.setAttribute("member", memberVO);
-		}
-		
-		return "redirect:../";
-	}
+	// security 설정으로 인해서 login 성공시 form을 설정을 해놓아서 거기로 url이 타짐
+	// filter or interceptor처럼 security도 server로 가기전에 실행이 된다.
+//	@PostMapping("login")
+//	public String login(MemberVO memberVO, HttpSession session) throws Exception {
+//		memberVO = memberService.detail(memberVO);
+//		
+//		if(memberVO != null) {
+//			session.setAttribute("member", memberVO);
+//		}
+//		
+//		return "redirect:../";
+//	}
 	
 	@GetMapping("logout")
 	public String logout(HttpSession session) throws Exception {

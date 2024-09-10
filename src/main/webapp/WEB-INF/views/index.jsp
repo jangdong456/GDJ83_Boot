@@ -11,7 +11,7 @@
 </head>
 <body>
 	<h1>Index Page</h1>
-	<img alt="" src="/images/2.gif">
+	<img alt="" src="/images/2.gif"> <!-- resources/static폴더 에 있다.-->
 	
 	<spring:message code="hello"></spring:message>
 	<spring:message code="hello2" text="기본값"></spring:message>

@@ -40,27 +40,28 @@ public class QnaService {
 
 		result = qnaMapper.refUpdate(qnaVO);
 		
-		if(result==1) {
+		if(result==0) {
 			throw new Exception();
 		}
 		
 		//파일 HDD에 저장 후 DB에 정보를 추가 | 경로 : D:/upload/
 		// 배열이니까 for문 사용
-		for(MultipartFile mf: attaches) {
-			// 파일을 안올렸을 경우 for 실행문 종료 하기 위해서 이코드를 씀
-			if(mf==null || mf.isEmpty()) {
-				continue;
+		if(attaches != null) {
+			for(MultipartFile mf: attaches) {
+				// 파일을 안올렸을 경우 for 실행문 종료 하기 위해서 이코드를 씀
+				if(mf==null || mf.isEmpty()) {
+					continue;
+				}
+				String fileName = fileManager.fileSave(upload+name, mf); // D:/upload/qna
+				
+				QnaFileVO qnaFileVO = new QnaFileVO();
+				qnaFileVO.setFileName(fileName);
+				qnaFileVO.setOriName(mf.getOriginalFilename());
+				qnaFileVO.setBoardNum(qnaVO.getBoardNum());
+				
+				result = qnaMapper.addFile(qnaFileVO);
 			}
-			String fileName = fileManager.fileSave(upload+name, mf); // D:/upload/qna
-			
-			QnaFileVO qnaFileVO = new QnaFileVO();
-			qnaFileVO.setFileName(fileName);
-			qnaFileVO.setOriName(mf.getOriginalFilename());
-			qnaFileVO.setBoardNum(qnaVO.getBoardNum());
-			
-			result = qnaMapper.addFile(qnaFileVO);
 		}
-		
 		return result;
 	}
 	
