@@ -14,24 +14,13 @@ import org.springframework.validation.BindingResult;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-public class MemberService implements UserDetailsService {
+@Slf4j
+public class MemberService {
 	
 	@Autowired
 	private MemberMapper memberMapper;
 	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		MemberVO memberVO = new MemberVO();
-		memberVO.setUsername(username);
-		try {
-			memberVO = memberMapper.detail(memberVO);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return memberVO;
-	}
+	private PasswordEncoder passwoEncoder;
 	
 	//검증 메서드
 	public boolean memberValidate(MemberVO memberVO, BindingResult bindingResult) throws Exception {
@@ -61,13 +50,14 @@ public class MemberService implements UserDetailsService {
 	}
 	
 	public int add(MemberVO memberVO) throws Exception {		
-		memberVO.setPassword(passwordEncoder.encode(memberVO.getPassword()));
+		memberVO.setPassword(passwoEncoder.encode(memberVO.getPassword()));
 		
 		int result = memberMapper.add(memberVO);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("username", memberVO.getUsername());
 		map.put("roleNum", 1);
+
 		
 		result = memberMapper.addRole(map);
 		return result;
@@ -80,7 +70,7 @@ public class MemberService implements UserDetailsService {
 		 if(result.getPassword().equals(memberVO.getPassword())) {
 			 return result;
 		 }
-	 }
+	 } 
 	 return null;
 	}
 	

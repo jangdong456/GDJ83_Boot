@@ -1,6 +1,12 @@
 package com.jang.app.members;
 
+import java.util.Enumeration;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +30,11 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@GetMapping("check")
+	public void check() throws Exception {
+		
+	}
+	
 	@GetMapping("update")
 	public String update(HttpSession session, Model model) throws Exception {
 		MemberVO memberVO = (MemberVO)session.getAttribute("member");
@@ -44,8 +55,24 @@ public class MemberController {
 	}
 	
 	@GetMapping("mypage")
-	public void mypage() throws Exception {
+	public void mypage(HttpSession session) throws Exception {
+		Enumeration<String> en = session.getAttributeNames();
+		while(en.hasMoreElements()) {
+			String name = en.nextElement();
+			log.info("Name : {} " , name); // SPRING_SECURITY_CONTEXT
+		}
+		SecurityContextImpl sc = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+//		log.info("SecurityContextImpl : {}", sc);
 		
+		SecurityContext context = SecurityContextHolder.getContext();
+//		log.info("context : {}", context);
+		
+		Authentication authentication = context.getAuthentication();
+		log.info("authentication: {}", authentication);
+		
+		MemberVO memberVO = (MemberVO)authentication.getPrincipal();
+		log.info("MemberVO : {} ", memberVO);
+		log.info("Name : {} ", authentication.getName());
 	}
 	
 	@GetMapping("add")
@@ -64,15 +91,28 @@ public class MemberController {
 //			return "member/add";
 		}
 			
-//		int result = memberService.add(memberVO);
+		int result = memberService.add(memberVO);
 		
 		return "redirect:../";
 		
 	}
 	
 	@GetMapping("login")
-	public void login() throws Exception {
+	public String login(String message, Model model) throws Exception {
+		model.addAttribute("message", message);
 		
+		SecurityContext context = SecurityContextHolder.getContext();
+		log.info("context : {}", context);
+		if(context == null) {
+			return "/member/login";
+		}
+		
+		String user = context.getAuthentication().getPrincipal().toString();
+		
+		if(user.equals("anonymousUser")) {
+			return "member/login";
+		}
+		return "redirect:/";
 	}
 	
 	// security 설정으로 인해서 login 성공시 form을 설정을 해놓아서 거기로 url이 타짐

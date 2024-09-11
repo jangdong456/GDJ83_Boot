@@ -52,6 +52,7 @@ public class MemberVO implements UserDetails { //security 사용되는 data type
 		
 		return null;
 	}
+	
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
@@ -68,8 +69,8 @@ public class MemberVO implements UserDetails { //security 사용되는 data type
 		return true;
 	}
 	
-	public boolean isEnabled() {
-		return true;
-	}
+//	public boolean isEnabled() {
+//		return true;
+//	}
 	
 }
