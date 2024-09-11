@@ -50,7 +50,7 @@ public class MemberVO implements UserDetails { //security 사용되는 data type
 			authorities.add(authority);
 		}
 		
-		return null;
+		return authorities;
 	}
 	
 	@Override
