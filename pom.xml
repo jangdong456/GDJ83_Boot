@@ -33,6 +33,12 @@
 	</properties>
 	<dependencies>
 		
+		<!-- WebClient -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
