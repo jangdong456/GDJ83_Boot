@@ -40,6 +40,9 @@ public class MemberVO implements UserDetails, OAuth2User { //security 사용되�
 	private boolean enabled;
 	private List<RoleVO> vos;
 	
+	private String accessToken;
+	private String sns;
+	
 	// OAuth2User
 	// attributes의 어떤 데이터를 저장할 것이냐? : token 정보 저
 	private Map<String, Object> attributes;
