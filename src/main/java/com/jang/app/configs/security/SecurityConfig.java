@@ -87,12 +87,13 @@ public class SecurityConfig {
 								// 로그아웃 url지정 2가지 방법
 								// 1. logoutUrl() : 로그아웃 URL 지정
 								.logoutUrl("/member/logout") 
+								.logoutSuccessHandler(null)
 								// 2. logoutRequestMatcher() : 로그아웃 url을 할 거냐, 객체타입이라 객체를 만들어야함
 //								.logoutRequestMatcher(new AntPathRequestMatcher("member/logout"))
 								.logoutSuccessUrl("/") // logoutSuccessUrl() : 로그아웃 하고 어느 url로 갈지 정해주는 함수
 								.invalidateHttpSession(true)// invalidateHttpSession():세션만료 밎 유지하는 함수 -> true: 세션만료, flase: 세션만료 시키지 않겠다
 //								.deleteCookies("쿠키명") // deleteCookies("쿠키명"): cookies 삭제 메서드 
-				
+								
 				)
 		// rememberMe : 자동 로그인?
 		.rememberMe(
@@ -122,6 +123,14 @@ public class SecurityConfig {
 						// session이 만료 되었을 경우 redirect할 url 
 						.expiredUrl("/member/check")
 				
+				)
+		
+		// Social Login
+		.oauth2Login(
+					oauth2 ->
+						oauth2.userInfoEndpoint(
+									user -> user.userService(memberUserService)
+								)
 				);
 		
 		return security.build();

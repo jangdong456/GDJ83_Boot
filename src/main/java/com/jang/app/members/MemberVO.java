@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.jang.app.vaildate.MemberAddGroup;
 import com.jang.app.vaildate.MemberUpdateGroup;
@@ -15,11 +16,12 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import lombok.Data;
 
 @Data
-public class MemberVO implements UserDetails { //security 사용되는 data type은 UserDetails 이다.
+public class MemberVO implements UserDetails, OAuth2User { //security 사용되는 data type은 UserDetails 이다.
 	
 	@NotBlank(groups = {MemberAddGroup.class, MemberUpdateGroup.class})
 	private String username;
@@ -38,7 +40,18 @@ public class MemberVO implements UserDetails { //security 사용되는 data type
 	private boolean enabled;
 	private List<RoleVO> vos;
 	
+	// OAuth2User
+	// attributes의 어떤 데이터를 저장할 것이냐? : token 정보 저
+	private Map<String, Object> attributes;
+	
 	@Override
+	public Map<String, Object> getAttributes() {
+		// TODO Auto-generated method stub
+		return this.attributes;
+	}
+	
+	@Override
+	// UserDetails 의 오버라이딩
 	// <? extends GrantedAuthority> : 타입의 제한을 두려고, GrantedAuthority 타입이거나 ,? 아무거나 타입이지만, GrantedAuthority를 구현한 타입
 	// super : 부모라는 뜻
 	public Collection<? extends GrantedAuthority> getAuthorities() { 
@@ -68,6 +81,8 @@ public class MemberVO implements UserDetails { //security 사용되는 data type
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+
 	
 //	public boolean isEnabled() {
 //		return true;
