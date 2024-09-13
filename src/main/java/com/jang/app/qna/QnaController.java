@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jang.app.util.Pager;
@@ -18,7 +22,7 @@ import com.jang.app.util.Pager;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
 @Slf4j
 @RequestMapping("/qna/*")
 public class QnaController {
@@ -35,14 +39,11 @@ public class QnaController {
 	}
 	
 	@GetMapping("list")
-	public void getList(Pager pager, Model model) throws Exception {
+	@CrossOrigin
+	public List<QnaVO> getList(Pager pager) throws Exception {
 
 		List<QnaVO> ar = qnaService.getList(pager);
-		
-		model.addAttribute("list",ar);
-		model.addAttribute("pager",pager);
-		
-		log.info("pager: {} :", pager);
+		return ar;
 	}
 	
 	@GetMapping("add")
@@ -66,10 +67,14 @@ public class QnaController {
 		
 	}
 	
-	@GetMapping("detail")
-	public void getDetial(QnaVO qnaVO, Model model) throws Exception {
+	@GetMapping("detail/{boardNum}/{name}")
+	public QnaVO getDetial(@PathVariable(name = "boardNum") Long bn, @PathVariable String name, QnaVO qnaVO, Model model) throws Exception {
+		log.info("BoardNum : {}", bn);
+		log.info("Name : {}", name);
+		
 		qnaVO = qnaService.getDetail(qnaVO);
-		model.addAttribute("vo", qnaVO);
+		
+		return qnaVO;
 	}
 	
 	// 프로젝트시 qnaFileVO 상속받게끔 해야 편하게 할 수 있음
